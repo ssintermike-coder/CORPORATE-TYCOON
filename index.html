@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Corporate_Tycoon_V6.9_Official.html</title>
+    <title>Corporate_Tycoon_V8.0_Official.html</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -22,14 +22,67 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; position: relative; }
+
+        /* ==================== สไตล์สำหรับหน้าเริ่มเกม (Main Menu) ==================== */
+        #main-menu-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center;
+            background-image: radial-gradient(rgba(234, 179, 8, 0.05) 15%, transparent 16%); background-size: 30px 30px;
+        }
+        .menu-card {
+            background: rgba(30, 41, 59, 0.85); border: 2px solid var(--accent);
+            padding: 40px; border-radius: 16px; max-width: 550px; width: 100%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 30px rgba(234, 179, 8, 0.2);
+            backdrop-filter: blur(8px); animation: menuFadeIn 0.5s ease-out;
+        }
+        .menu-logo { font-size: 52px; margin-bottom: 10px; animation: tycoonBounce 1s infinite alternate; display: inline-block; }
+        .menu-title { font-size: 28px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .menu-subtitle { font-size: 15px; color: var(--accent); font-weight: 600; margin-bottom: 25px; }
+        .menu-quote { background: #0f172a; border-left: 4px solid var(--cosmetic); padding: 12px; border-radius: 6px; font-size: 13px; color: #cbd5e1; font-style: italic; margin-bottom: 20px; text-align: left; line-height: 1.5; }
+        .menu-input-group { text-align: left; margin-bottom: 20px; display: flex; flex-direction: column; gap: 6px; }
+        .menu-input-group label { font-size: 13px; color: var(--text-sub); font-weight: bold; }
+        .menu-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: #0f172a; color: white; font-size: 14px; outline: none; }
+        .menu-btn-group { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .menu-btn { width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.2s; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .menu-btn-continue { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
+        .menu-btn-continue:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(34, 197, 94, 0.5); }
+        .menu-btn-continue:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; opacity: 0.5; }
+        .menu-btn-new { background: #334155; color: #f8fafc; border: 1px solid var(--border-color); }
+        .menu-btn-new:hover { background: #ef4444; color: white; border-color: #ef4444; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4); }
+        .menu-footer { font-size: 11px; color: var(--text-sub); margin-top: 25px; }
+
+        /* ==================== สไตล์สำหรับหน้าต่างรับเกียรติบัตร (Prestige Popup) ==================== */
+        #prestige-popup-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(15, 23, 42, 0.9); z-index: 6000;
+            display: none; align-items: center; justify-content: center; padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .popup-card {
+            background: #1e293b; border: 1px solid var(--border-color);
+            padding: 25px; border-radius: 16px; max-width: 420px; width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+            animation: menuFadeIn 0.4s ease-out;
+        }
+        .popup-preview-box {
+            width: 100%; max-width: 230px; aspect-ratio: 9/16;
+            border-radius: 8px; overflow: hidden; border: 2px solid var(--accent);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .popup-preview-box canvas { width: 100%; height: 100%; display: block; }
 
         /* แถบข้าง */
         .sidebar { width: 300px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); padding: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 10; }
         .logo-section { font-weight: bold; font-size: 14px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; text-shadow: 0 0 5px rgba(234, 179, 8, 0.3); }
         .nav-item { padding: 12px; border-radius: 8px; cursor: pointer; font-size: 13px; color: #cbd5e1; transition: 0.2s; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
         .nav-item:hover, .nav-item.active { background: #334155; color: white; font-weight: 600; }
-        
+        .nav-item.btn-exit-menu { margin-top: 10px; background: rgba(239, 68, 68, 0.1); border: 1px dashed rgba(239, 68, 68, 0.4); color: #fca5a5; }
+        .nav-item.btn-exit-menu:hover { background: #ef4444; color: white; font-weight: bold; border-style: solid; }
+
         .stats-box { background: #0f172a; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; margin-top: auto; display: flex; flex-direction: column; gap: 4px; }
         .stats-label { font-size: 11px; color: var(--text-sub); }
         .stats-value { font-size: 22px; font-weight: bold; color: var(--accent); overflow: hidden; text-overflow: ellipsis; }
@@ -40,17 +93,14 @@
         .panic-btn { background: #374151; color: #f3f4f6; border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; }
         #panic-screen { display: none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: white; z-index: 9999; padding: 40px; font-family: monospace; color: black; }
 
-        .softlock-alert { background: rgba(239, 68, 68, 0.2); border: 2px dashed #ef4444; color: #fca5a5; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; animation: pulseRed 1.5s infinite alternate; }
-        .bailout-btn { background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .softlock-alert { background: rgba(239, 68, 68, 0.2); border: 2px dashed #ef4444; color: #fca5a5; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .bailout-btn { background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-        /* แผงชั้นโชว์อุปกรณ์เสริมบารมี */
+        /* แผงชั้นโชว์ */
         .desk-shelf-container { background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 5px; }
         .shelf-title { font-size: 11px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: bold; }
         .shelf-slots { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 2px; }
-        .shelf-item {
-            width: 50px; height: 50px; background: rgba(0,0,0,0.3); border: 2px dashed #475569; border-radius: 8px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 20px; position: relative; opacity: 0.2; transition: 0.3s;
-        }
+        .shelf-item { width: 50px; height: 50px; background: rgba(0,0,0,0.3); border: 2px dashed #475569; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 20px; position: relative; opacity: 0.2; transition: 0.3s; }
         .shelf-item.unlocked { opacity: 1; border-style: solid; background: #334155; }
         .shelf-item.Common.unlocked { border-color: var(--primary); }
         .shelf-item.Epic.unlocked { border-color: var(--epic); box-shadow: 0 0 8px rgba(168,85,247,0.4); }
@@ -61,19 +111,9 @@
 
         /* ผังจำลองออฟฟิศ */
         .sandbox-wrapper { display: flex; gap: 15px; width: 100%; height: 380px; }
-        
-        /* 1. โซนโต๊ะปั๊มเงิน (ฝั่งซ้าย) */
-        .office-sandbox {
-            flex: 1; height: 100%; background: var(--office-carpet); border: 3px solid #475569; border-radius: 12px; position: relative; overflow: hidden; cursor: cell; box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
-            background-image: radial-gradient(#1e293b 15%, transparent 16%); background-size: 20px 20px;
-        }
+        .office-sandbox { flex: 1; height: 100%; background: var(--office-carpet); border: 3px solid #475569; border-radius: 12px; position: relative; overflow: hidden; cursor: cell; box-shadow: inset 0 0 20px rgba(0,0,0,0.4); background-image: radial-gradient(#1e293b 15%, transparent 16%); background-size: 20px 20px; }
         .sandbox-banner { position: absolute; top: 8px; left: 10px; background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 4px; font-size: 11px; color: var(--text-sub); font-weight: bold; pointer-events: none; border: 1px solid var(--border-color); }
-
-        /* 2. มุมห้องผู้บริหารส่วนตัว (ฝั่งขวา) */
-        .director-cabin {
-            width: 320px; height: 100%; background: var(--cabin-parquet); border: 3px solid #b45309; border-radius: 12px; position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
-            background-image: linear-gradient(rgba(0,0,0,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.15) 1px, transparent 1px); background-size: 40px 40px;
-        }
+        .director-cabin { width: 320px; height: 100%; background: var(--cabin-parquet); border: 3px solid #b45309; border-radius: 12px; position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.6); background-image: linear-gradient(rgba(0,0,0,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.15) 1px, transparent 1px); background-size: 40px 40px; }
         .cabin-banner { position: absolute; top: 8px; left: 10px; background: rgba(180,83,9,0.8); padding: 3px 8px; border-radius: 4px; font-size: 11px; color: white; font-weight: bold; pointer-events: none; border: 1px solid #f59e0b; z-index: 10; }
 
         /* โหนดงาน */
@@ -84,29 +124,23 @@
         .crop-bar { position: absolute; bottom: -4px; width: 45px; height: 5px; background: #334155; border-radius: 3px; overflow: hidden; border: 1px solid #0f172a; }
         .crop-progress { height: 100%; width: 0%; background: var(--primary); }
 
-        /* ไอเทมสเตตัสในโซนโต๊ะทำงาน */
         .desk-decoration { position: absolute; font-size: 12px; opacity: 0.5; pointer-events: none; z-index: 1; }
-        
-        /* ไอเทมตกแต่งหรูหราในห้องส่วนตัว */
         .cosmetic-decoration { position: absolute; font-size: 26px; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.6)); pointer-events: none; z-index: 2; display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; }
         .cosmetic-decoration.locked { opacity: 0.15; filter: grayscale(1) contrast(0.5); }
         .cosmetic-decoration.unlocked { animation: tycoonBounce 0.8s infinite alternate; }
         .cosmetic-decoration.Mythic.unlocked { animation: mythicGlow 0.6s infinite alternate, tycoonBounce 0.5s infinite alternate; }
         
-        /* ทูลทิปห้อง CEO */
         .cabin-slot-detector { position: absolute; width: 35px; height: 35px; z-index: 3; cursor: help; }
         .cabin-tooltip { display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 5px 8px; font-size: 10px; border-radius: 4px; white-space: nowrap; z-index: 99; border: 1px solid var(--border-color); pointer-events: none; }
         .cabin-slot-detector:hover .cabin-tooltip { display: block; }
 
-        /* UI ทั่วไป */
+        /* UI อื่นๆ */
         .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
         .shop-item { background: #1e293b; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; display: flex; flex-direction: column; gap: 5px; position: relative; }
-        
-        /* สไตล์กล่องใบสั่งงานใหม่ */
         .project-cost-benefit { background: #0f172a; padding: 6px 10px; border-radius: 6px; font-size: 11px; display: flex; flex-direction: column; gap: 2px; border: 1px solid #334155; margin: 4px 0; }
-        
-        .shop-btn { background: #334155; border: 1px solid var(--border-color); color: white; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+        .shop-btn { background: #334155; border: 1px solid var(--border-color); color: white; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; width: 100%; text-align: center; }
         .shop-btn.selected { background: var(--accent); color: #0f172a; border-color: var(--accent); font-weight: bold; }
+        .shop-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .gacha-container { display: flex; flex-direction: column; gap: 20px; }
         .gacha-box { background: #1e293b; border: 2px dashed var(--accent); padding: 25px; border-radius: 12px; text-align: center; }
@@ -123,6 +157,7 @@
         .Legendary { color: var(--legendary); font-weight: bold; }
         .Mythic { color: var(--mythic); font-weight: bold; text-shadow: 0 0 10px var(--mythic); }
 
+        @keyframes menuFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes tycoonBounce { 0% { transform: translateY(0); } 100% { transform: translateY(-4px); } }
         @keyframes mythicGlow { 0% { filter: drop-shadow(0 0 2px var(--mythic)); } 100% { filter: drop-shadow(0 0 12px var(--mythic)); } }
         @keyframes shockNoti { 0% { transform: scale(0.9) rotate(-5deg); } 100% { transform: scale(1.1) rotate(5deg); } }
@@ -131,54 +166,73 @@
 
         .arrow-minigame-box { background: #1e293b; border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; max-width: 450px; display: flex; align-items: center; justify-content: space-between; gap: 15px; }
         .arrow-display { font-size: 36px; background: #0f172a; padding: 5px 25px; border-radius: 8px; border: 2px solid var(--accent); font-weight: bold; min-width: 90px; text-align: center; }
-
         .hidden { display: none !important; }
 
-        /* ==================== สไตล์สำหรับระบบจุติคลาสและป้ายชื่อสีออร่าแบบใหม่ ==================== */
         .rank-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: bold; text-transform: uppercase; margin-left: 6px; display: inline-block; }
         .rank-tag.rank-0 { background: #475569; color: #cbd5e1; }
         .rank-tag.rank-1 { background: #14532d; color: #00FFCC; font-weight: bold; }
-        
-        /* ขั้น 3: เรืองแสงสีม่วง */
         .rank-tag.rank-2 { background: #1e3a8a; color: #60a5fa; border: 1px solid #3b82f6; }
-        .rank-tag.rank-3 { 
-            background: #3b0764; color: #9F7AEA; border: 1px solid #a855f7;
-            text-shadow: 0 0 5px #a855f7; box-shadow: 0 0 8px rgba(168,85,247,0.6);
-        }
-        /* ขั้น 4: ออร่าส้มทองพุ่ง */
-        .rank-tag.rank-4 { 
-            background: #7c2d12; color: #ED8936; border: 1px solid #f97316;
-            text-shadow: 0 0 8px #f97316; box-shadow: 0 0 12px rgba(249,115,22,0.8);
-            animation: tycoonBounce 0.5s infinite alternate;
-        }
-        /* ขั้น 5: สีรุ้ง Wave ขิงขั้นเทพ */
-        .rank-tag.rank-5 {
-            background: linear-gradient(90deg, #ff007f, #7f00ff, #00f0ff, #ff007f);
-            background-size: 300% 300%; color: white; border: 1px solid #f43f5e;
-            box-shadow: 0 0 20px #d946ef; font-weight: 900;
-            animation: rainbowWave 2s linear infinite, tycoonBounce 0.3s infinite alternate;
-        }
-
-        @keyframes rainbowWave {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
+        .rank-tag.rank-3 { background: #3b0764; color: #9F7AEA; border: 1px solid #a855f7; text-shadow: 0 0 5px #a855f7; box-shadow: 0 0 8px rgba(168,85,247,0.6); }
+        .rank-tag.rank-4 { background: #7c2d12; color: #ED8936; border: 1px solid #f97316; text-shadow: 0 0 8px #f97316; box-shadow: 0 0 12px rgba(249,115,22,0.8); animation: tycoonBounce 0.5s infinite alternate; }
+        .rank-tag.rank-5 { background: linear-gradient(90deg, #ff007f, #7f00ff, #00f0ff, #ff007f); background-size: 300% 300%; color: white; border: 1px solid #f43f5e; box-shadow: 0 0 20px #d946ef; font-weight: 900; animation: rainbowWave 2s linear infinite, tycoonBounce 0.3s infinite alternate; }
+        @keyframes rainbowWave { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="logo-section">
-            🏢 CORPORATE TYCOON v6.9 
-            <div id="sidebar-rank-slot"></div>
+    <div id="main-menu-screen">
+        <div class="menu-card">
+            <div class="menu-logo">🏢👨‍💻✨</div>
+            <h1 class="menu-title">Corporate Tycoon</h1>
+            <div class="menu-subtitle">ระบบจำลองสุดยอดผู้บริหารสายสู้ชีวิต</div>
+            
+            <div class="menu-quote">
+                💬 <b>เสียงเรียกจากบอร์ดบริหาร:</b><br>
+                "เอกสารกองท่วมหัว บอทพนักงานนั่งรอนายจ้าง และตู้กาชาใหม่เพิ่งเข้า... ถามจริงเหอะ ตัวคุณ<b>พร้อมที่จะเข้าสู่วัฏจักรการอู้งานระดับมืออาชีพ</b>แล้วหรือยัง?!"
+            </div>
+
+            <div class="menu-input-group">
+                <label for="input-ceo-name">✍️ ตั้งชื่อท่านประธาน (จะนำไปสลักลงบนการ์ดเกียรติยศ):</label>
+                <input type="text" id="input-ceo-name" class="menu-input" value="กิตติศักดิ์ ร่ำรวยมหาศาล" placeholder="พิมพ์ชื่อของคุณตรงนี้...">
+            </div>
+
+            <div class="menu-btn-group">
+                <button class="menu-btn menu-btn-continue" id="menu-continue-btn" onclick="menuContinueGame()">
+                    ▶️ เล่นต่อจากบริษัทเดิม (Continue)
+                </button>
+                <button class="menu-btn menu-btn-new" onclick="menuNewGame()">
+                    🆕 เปิดสาขาใหม่/เริ่มเล่นใหม่ (New Game)
+                </button>
+            </div>
+            <div class="menu-footer">พัฒนาโดยทีมงานอินดี้ประจำแผนก • v8.0 (Prestige Card Edition)</div>
         </div>
-        <div class="nav-item active" id="m-farm" onclick="switchTab('farm')"><span>🖥️ ระบบจัดการออฟฟิศหลัก</span></div>
-        <div class="nav-item" id="m-shop" onclick="switchTab('shop')"><span>🛒 คลังใบสั่งโปรเจกต์งาน</span></div>
-        <div class="nav-item" id="m-up" onclick="switchTab('up')"><span>👥 โครงสร้างทีมพนักงาน</span></div>
+    </div>
+
+    <div id="prestige-popup-overlay">
+        <div class="popup-card">
+            <h2 style="color:var(--accent); text-align:center;">🎉 เลื่อนตำแหน่งเกียรติยศสำเร็จ!</h2>
+            <p style="font-size:12px; color:var(--text-sub); text-align:center;">บอร์ดบริหารร่วมลงนามมอบการ์ดที่ระลึกขนาด 1080x1920 (9:16) เพื่อให้ท่านเซฟไปตั้งวอลเปเปอร์หรืออวดเพื่อน</p>
+            
+            <div class="popup-preview-box">
+                <canvas id="prestigeCanvas" width="1080" height="1920"></canvas>
+            </div>
+
+            <button class="shop-btn" style="background:#2563eb; color:white; border:none; padding:12px; font-weight:bold;" onclick="downloadPrestigeCard()">💾 กดดาวน์โหลดรูปภาพการ์ด</button>
+            <button class="shop-btn" style="background:#334155; color:#94a3b8;" onclick="closePrestigePopup()">✖️ ปิดหน้าต่างและเริ่มบริหารบริษัทใหม่</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="logo-section">🏢 CORPORATE TYCOON <div id="sidebar-rank-slot"></div></div>
+        <div class="nav-item active" id="m-farm" onclick="switchTab('farm')"><span>🖥️ จัดการออฟฟิศหลัก</span></div>
+        <div class="nav-item" id="m-shop" onclick="switchTab('shop')"><span>🛒 คลังใบสั่งโปรเจกต์</span></div>
+        <div class="nav-item" id="m-up" onclick="switchTab('up')"><span>👥 โครงสร้างพนักงาน</span></div>
         <div class="nav-item" id="m-gacha" onclick="switchTab('gacha')"><span>🎁 ศูนย์รวมตู้สุ่มกาชา</span> <span id="badge-inv" style="background:var(--cosmetic); color:white; padding:1px 6px; border-radius:10px; font-size:10px;">0</span></div>
         <div class="nav-item" id="m-codex" onclick="switchTab('codex')"><span>📖 สารานุกรมไอเทม</span></div>
         <div class="nav-item" id="m-luxury" onclick="switchTab('luxury')"><span>💸 กองทุนละลายทรัพย์</span></div>
         <div class="nav-item" id="m-prestige" onclick="switchTab('prestige')"><span>👑 ลงนามขายกิจการ</span></div>
+        
+        <div class="nav-item btn-exit-menu" onclick="returnToMainMenu()"><span>🚪 กลับหน้าแรก (Main Menu)</span></div>
         
         <div class="stats-box">
             <div class="stats-label">💰 ทุนบริษัทในบัญชี</div>
@@ -195,10 +249,7 @@
         </div>
 
         <div id="softlock-panel" class="softlock-alert hidden">
-            <div>
-                <strong>🚨 วิกฤตเงินทุนหมดบัญชี!</strong>
-                <p style="font-size:12px; margin-top:2px;">บริษัทขาดสภาพคล่องร้ายแรงและไม่มีงานค้างส่ง กรุณากดรับเบี้ยเลี้ยงยังชีพพนักงาน</p>
-            </div>
+            <div><strong>🚨 วิกฤตเงินทุนหมดบัญชี!</strong><p style="font-size:12px; margin-top:2px;">บริษัทขาดสภาพคล่องร้ายแรงและไม่มีงานค้างส่ง กรุณากดรับเบี้ยเลี้ยงยังชีพพนักงาน</p></div>
             <button class="bailout-btn" onclick="receiveBailout()">รับทุนช่วยเหลือพนักงานดีเด่น (+50 G)</button>
         </div>
 
@@ -207,76 +258,37 @@
                 <div class="shelf-title">🖥️ ชั้นวางโชว์อุปกรณ์สำนักงาน (ตู้ที่ 1 สายสเตตัสช่วยเหลือ)</div>
                 <div class="shelf-slots" id="desk-shelf-slots"></div>
             </div>
-
             <div class="sandbox-wrapper">
-                <div class="office-sandbox" id="sandbox" onclick="handleSandboxClick(event)">
-                    <div class="sandbox-banner">🖥️ โซนโต๊ะปฏิบัติงานคีย์ข้อมูลหลัก</div>
-                </div>
-
-                <div class="director-cabin" id="cabin-room">
-                    <div class="cabin-banner">👑 ห้องทำงานส่วนตัวของ CEO (มุมแฟชัน)</div>
-                </div>
+                <div class="office-sandbox" id="sandbox" onclick="handleSandboxClick(event)"><div class="sandbox-banner">🖥️ โซนโต๊ะปฏิบัติงานคีย์ข้อมูลหลัก</div></div>
+                <div class="director-cabin" id="cabin-room"><div class="cabin-banner">👑 ห้องทำงานส่วนตัวของ CEO (มุมแฟชัน)</div></div>
             </div>
-            
             <div class="arrow-minigame-box" style="margin-top:15px;">
-                <div>
-                    <label style="font-size: 12px; font-weight: bold; color: var(--accent);">⌨️ มินิเกมคีย์ข้อมูลเร่งด่วน (คลิกตรงนี้แล้วกดปุ่มลูกศรบนคีย์บอร์ด)</label>
-                    <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">กดปุ่มลูกศรที่ตรงกับหน้าจอเพื่อเร่งความเร็วเคลียร์งานสะสมบนโต๊ะทั้งหมดแบบทีละนิด</p>
-                </div>
+                <div><label style="font-size: 12px; font-weight: bold; color: var(--accent);">⌨️ มินิเกมคีย์ข้อมูลเร่งด่วน</label><p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">กดปุ่มลูกศรที่ตรงกับหน้าจอเพื่อเร่งความเร็วเคลียร์งานสะสมบนโต๊ะ</p></div>
                 <div class="arrow-display" id="arrow-target">⬆️</div>
             </div>
         </div>
 
-        <div id="tab-shop" class="hidden">
-            <div class="shop-grid" id="shop-container"></div>
-        </div>
-
-        <div id="tab-up" class="hidden">
-            <div class="shop-grid" id="upgrade-container"></div>
-        </div>
-
+        <div id="tab-shop" class="hidden"><div class="shop-grid" id="shop-container"></div></div>
+        <div id="tab-up" class="hidden"><div class="shop-grid" id="upgrade-container"></div></div>
         <div id="tab-gacha" class="hidden">
             <div class="gacha-container">
-                <div class="gacha-box">
-                    <h2>ตู้ที่ 1: ตู้สุ่มอุปกรณ์สำนักงานช่วยเล่น 🎁</h2>
-                    <p style="color:var(--text-sub); font-size:13px; margin: 8px 0;">ค่าธรรมเนียมสุ่มครั้งละ <b style="color:white;">300 G</b> สุ่มเพื่อรับบัฟความเร็วและเงินโบนัสเปิดเผยบนแถบชั้นวางโชว์!</p>
-                    <button class="gacha-btn" onclick="rollGacha()">โยกตู้สุ่มสายสเตตัส (300 G)</button>
-                    <h3 id="gacha-result" style="margin-top:15px; font-size:16px; min-height:20px;"></h3>
-                </div>
-
-                <div class="gacha-box cosmetic-box">
-                    <h2 style="color: var(--cosmetic);">ตู้ที่ 2: ตู้สุ่มเฟอร์นิเจอร์ตกแต่งออฟฟิศสุดหรู ✨</h2>
-                    <p style="color:var(--text-sub); font-size:13px; margin: 8px 0;">ค่าธรรมเนียมสุ่มครั้งละ <b style="color:white;">150 G</b> <span style="color:var(--cosmetic); font-weight:bold;">(เน้นความสวยงาม มีการปรับเรตใหม่ให้ท้าทายขึ้นแล้ว!)</span></p>
-                    <button class="gacha-btn cosmetic-btn" onclick="rollCosmeticGacha()">โยกตู้สุ่มสายแฟชันเข้าห้อง CEO (150 G)</button>
-                    <h3 id="gacha-cosmetic-result" style="margin-top:15px; font-size:16px; min-height:20px;"></h3>
-                </div>
+                <div class="gacha-box"><h2>ตู้ที่ 1: ตู้สุ่มอุปกรณ์สำนักงานช่วยเล่น 🎁</h2><p style="color:var(--text-sub); font-size:13px; margin: 8px 0;">ค่าธรรมเนียมสุ่มครั้งละ 300 G</p><button class="gacha-btn" onclick="rollGacha()">โยกตู้สุ่มสายสเตตัส (300 G)</button><h3 id="gacha-result" style="margin-top:15px; font-size:16px; min-height:20px;"></h3></div>
+                <div class="gacha-box cosmetic-box"><h2 style="color: var(--cosmetic);">ตู้ที่ 2: ตู้สุ่มเฟอร์นิเจอร์ตกแต่งออฟฟิศสุดหรู ✨</h2><p style="color:var(--text-sub); font-size:13px; margin: 8px 0;">ค่าธรรมเนียมสุ่มครั้งละ 150 G</p><button class="gacha-btn cosmetic-btn" onclick="rollCosmeticGacha()">โยกตู้สุ่มสายแฟชันเข้าห้อง CEO (150 G)</button><h3 id="gacha-cosmetic-result" style="margin-top:15px; font-size:16px; min-height:20px;"></h3></div>
             </div>
         </div>
 
         <div id="tab-codex" class="hidden">
             <h2>📖 สารานุกรมไอเทมทั้งหมดในออฟฟิศ</h2>
             <h3 style="color: var(--accent); margin-top: 15px;">📊 อุปกรณ์สำนักงาน (ตู้ที่ 1)</h3>
-            <table class="codex-table">
-                <thead><tr><th>ไอเทม</th><th>ระดับความแรร์</th><th>เรตสุ่ม</th><th>เอฟเฟกต์ช่วยเล่น</th></tr></thead>
-                <tbody id="codex-tbody"></tbody>
-            </table>
-
-            <h3 style="color: var(--cosmetic); margin-top: 25px;">🎨 เฟอร์นิเจอร์ตกแต่งในห้องบอส (ตู้ที่ 2 - ปรับสมดุลใหม่)</h3>
-            <table class="codex-table">
-                <thead><tr><th>ไอเทมตกแต่ง</th><th>ระดับความแรร์</th><th>เรตสุ่มใหม่</th><th>Def สถานะการครอบครอง</th></tr></thead>
-                <tbody id="codex-cosmetic-tbody"></tbody>
-            </table>
+            <table class="codex-table"><thead><tr><th>ไอเทม</th><th>ระดับความแรร์</th><th>เรตสุ่ม</th><th>เอฟเฟกต์ช่วยเล่น</th></tr></thead><tbody id="codex-tbody"></tbody></table>
+            <h3 style="color: var(--cosmetic); margin-top: 25px;">🎨 เฟอร์นิเจอร์ตกแต่งในห้องบอส (ตู้ที่ 2)</h3>
+            <table class="codex-table"><thead><tr><th>ไอเทมตกแต่ง</th><th>ระดับความแรร์</th><th>เรตสุ่มใหม่</th><th>สถานะการครอบครอง</th></tr></thead><tbody id="codex-cosmetic-tbody"></tbody></table>
         </div>
-
-        <div id="tab-luxury" class="hidden">
-            <div class="shop-grid" id="luxury-container"></div>
-        </div>
-
+        <div id="tab-luxury" class="hidden"><div class="shop-grid" id="luxury-container"></div></div>
         <div id="tab-prestige" class="hidden">
             <div style="background:#1e293b; padding:20px; border-radius:8px; border:1px solid var(--border-color);">
                 <h2>👑 ระบบขายกิจการเพื่อเลื่อนตำแหน่งเกียรติยศ</h2>
-                <p style="font-size:13px; color:var(--text-sub); margin-top:5px;">รีเซ็ตระบบฟาร์ม เงิน และบอทกลับไปเริ่มต้นใหม่ เพื่อแปลงสินทรัพย์เป็นตำแหน่งถาวรและรับหุ้นผู้บริหารเพิ่มขึ้น</p>
-                
+                <p style="font-size:13px; color:var(--text-sub); margin-top:5px;">รีเซ็ตระบบฟาร์ม เพื่อแลกกับตำแหน่งบอร์ดบริหารระดับสูงถาวร พร้อมรับการ์ดเกียรติยศเพื่อดาวน์โหลดไปอวดเพื่อน!</p>
                 <div style="background:#0f172a; padding:15px; border-radius:6px; margin-top:15px; border:1px solid var(--border-color); font-size:13px; line-height:1.6;">
                     <div>🎯 ตำแหน่งเป้าหมายขั้นต่อไป: <span id="prestige-next-rank-name" style="font-weight:bold;"></span></div>
                     <div style="color:var(--text-sub); font-size:12px;">รายละเอียดดีไซน์: <span id="prestige-rank-desc" style="color:white;"></span></div>
@@ -284,17 +296,13 @@
                     <div id="prestige-money-condition">• 💰 เงินทุนที่ต้องการ: <span id="prestige-cost-txt"></span></div>
                     <div id="prestige-fashion-condition">• 🪑 ข้อกำหนดไอเทมแฟชัน: <span id="prestige-fashion-txt"></span></div>
                 </div>
-
-                <button class="shop-btn" id="prestige-btn" style="margin-top:15px; width:auto; padding:10px 25px;" onclick="triggerPrestige()">ขายกิจการ</button>
+                <button class="shop-btn" id="prestige-btn" style="margin-top:15px; width:auto; padding:10px 25px;" onclick="triggerPrestige()">ขายกิจการและรับใบประกาศ</button>
                 <div style="margin-top:10px; font-size:13px; font-weight:bold;" id="prestige-requirement"></div>
             </div>
         </div>
     </div>
 
-    <div id="panic-screen" onclick="exitPanic()">
-        <h2>System Performance Analytics (Q2-2026)</h2>
-        <pre style="margin-top:20px; color: green; font-size: 13px;">$ npm run production:build --status=success</pre>
-    </div>
+    <div id="panic-screen" onclick="exitPanic()"><h2>System Performance Analytics (Q2-2026)</h2><pre style="margin-top:20px; color: green; font-size: 13px;">$ npm run production:build --status=success</pre></div>
 
     <script>
         const cropsData = [
@@ -309,9 +317,9 @@
             { id: 'g_cup', name: '☕ แก้วกาแฟเซรามิค', rarity: 'Common', rate: '42.25%', buff: 'grow', val: 0.5, desc: 'งานเดินไว เคลียร์โปรเจกต์เร็วขึ้น -0.5 วินาที', icon:'☕' },
             { id: 'g_cactus', name: '🌵 ต้นกระบองเพชร', rarity: 'Common', rate: '42.25%', buff: 'grow', val: 0.5, desc: 'ดักรังสีจอคอม เคลียร์โปรเจกต์เร็วขึ้น -0.5 วินาที', icon:'🌵' },
             { id: 'g_chair', name: '🪑 เบาะรองเพื่อสุขภาพ', rarity: 'Epic', rate: '7.0%', buff: 'price', val: 0.15, desc: 'แก้ปวดหลัง เพิ่มเงินที่ได้จากงานทบ +15%', icon:'🪑' },
-            { id: 'g_kb', name: '⌨️ คีย์บอร์ดกลไก', rarity: 'Epic', rate: '7.0%', buff: 'macro', val: 0.4, desc: 'กดมินิเกมลูกศรได้ประสิทธิภาพในการลดเวลาเพิ่มขึ้น +0.4 วินาที', icon:'⌨️' },
+            { id: 'g_kb', name: '⌨️ คีย์บอร์ดกลไก', rarity: 'Epic', rate: '7.0%', buff: 'macro', val: 0.4, desc: 'กดมินิเกมลูกศรลดเวลาเพิ่มขึ้น +0.4 วินาที', icon:'⌨️' },
             { id: 'g_fig', name: '👑 ฟิกเกอร์อนิเมะลิมิเต็ด', rarity: 'Legendary', rate: '1.0%', buff: 'price', val: 0.6, desc: 'เพิ่มเงินที่ได้จากงานทบ +60%', icon:'👑' },
-            { id: 'g_gpu', name: '💎 การ์ดจอขุดทองคำขาว', rarity: 'Mythic', rate: '0.5%', buff: 'all', val: 2, desc: 'โปรเจกต์เดินไว x2 และมูลค่าสัญญาจ้างงานเพิ่ม +150%', icon:'💎' }
+            { id: 'g_gpu', name: '💎 การ์ดจอขุดทองคำขาว', rarity: 'Mythic', rate: '0.5%', buff: 'all', val: 2, desc: 'โปรเจกต์เดินไว x2 และมูลค่าสัญญาเพิ่ม +150%', icon:'💎' }
         ];
 
         const cosmeticPool = [
@@ -331,7 +339,7 @@
             { id: 'c_coffee', name: '☕ เครื่องชงกาแฟเอสเพรสโซ่', rarity: 'Legendary', rate: '8.5%', icon: '☕', px: 20, py: 170 },
             { id: 'c_tiger', name: '🐅 พรมหนังเสือโคร่งปูพื้น', rarity: 'Legendary', rate: '8.5%', icon: '🐅', px: 145, py: 260 },
             { id: 'c_speaker', name: '📻 ลำโพงบลูทูธ Marshall', rarity: 'Legendary', rate: '8.5%', icon: '📻', px: 270, py: 220 },
-            { id: 'c_trophy', name: '🏆 โา่รางวัลพนักงานดีเด่น', rarity: 'Legendary', rate: '8.5%', icon: '🏆', px: 145, py: 110 },
+            { id: 'c_trophy', name: '🏆 โล่รางวัลพนักงานดีเด่น', rarity: 'Legendary', rate: '8.5%', icon: '🏆', px: 145, py: 110 },
             { id: 'c_chairrgb', name: '🪑 เก้าอี้เกมมิ่ง RGB', rarity: 'Mythic', rate: '1.5%', icon: '🪑', px: 145, py: 200 },
             { id: 'c_robot', name: '🤖 หุ่นยนต์ดูดฝุ่นอัจฉริยะ', rarity: 'Mythic', rate: '1.5%', icon: '🤖', px: 270, py: 320 },
             { id: 'c_minibar', name: '🍺 ตู้เย็นมินิบาร์แช่เครื่องดื่ม', rarity: 'Mythic', rate: '1.5%', icon: '🍺', px: 270, py: 270 }
@@ -339,94 +347,220 @@
 
         const rankConfigs = {
             0: { name: "[INTERN WORKER]", class: "rank-0", cost: 15000, desc: "เด็กฝึกงานคีย์ข้อมูลตัวเล็กๆ สู้ชีวิตต่อไป", reqCheck: () => true, reqText: "ชิวๆ ไม่มีเงื่อนไขไอเทมพิเศษ" },
-            1: { name: "[STARTUP HERO]", class: "rank-1", cost: 50000, desc: "ฮีโร่สตาร์ทอัพป้ายเขียวมินต์เรียบง่าย สายชิว", reqCheck: () => true, reqText: "ชิวๆ ไม่มีเงื่อนไขไอเทมพิเศษ (ไม่เรืองแสง)" },
-            2: { name: "[EXECUTIVE DIRECTOR]", class: "rank-2", cost: 150000, desc: "เริ่มขยับสู่ตำแหน่งผู้บริหารชั้นกลางป้ายสีน้ำเงินทิวลิป", reqCheck: () => gameState.cosmeticInventory.length >= 3, reqText: "ต้องมีเฟอร์นิเจอร์ประดับห้อง CEO ในครอบครองอย่างน้อย 3 ชิ้น" },
-            3: { name: "[BOARD OF DIRECTORS]", class: "rank-3", cost: 450000, desc: "บอร์ดบริหารผู้ทรงอิทธิพล พร้อมป้ายออร่าเรืองแสงสีม่วงอเมทิสต์", reqCheck: () => hasCosmeticTier("Epic"), reqText: "ต้องครอบครองเฟอร์นิเจอร์ระดับ Epic อย่างน้อย 1 ชิ้น!" },
-            4: { name: "[CHIEF EXECUTIVE OFFICER]", class: "rank-4", cost: 1200000, desc: "ท่านประธานสูงสุด ป้ายเงาส้มทอง Metallic พร้อมออร่าขยับได้สั่นสะเทือนออฟฟิศ", reqCheck: () => countCosmeticTier("Epic") >= 3, reqText: "ต้องครอบครองเฟอร์นิเจอร์ระดับ Epic อย่างน้อย 3 ชิ้น!" },
-            5: { name: "[THE CONGLOMERATE GOD]", class: "rank-5", cost: 5000000, desc: "พระเจ้าสูงสุดแห่งวงการธุรกิจ ป้ายไฟวิ่งสีรุ้ง RGB แฟลชตาพร้อมเอฟเฟกต์มงกุฎขั้นขิงเทวะ", reqCheck: () => hasCosmeticTier("Mythic") || hasCosmeticTier("Legendary"), reqText: "ต้องครอบครองเฟอร์นิเจอร์แรร์ระดับ Legendary หรือ Mythic อย่างน้อย 1 ชิ้น!" }
+            1: { name: "[STARTUP HERO]", class: "rank-1", cost: 50000, desc: "ฮีโร่สตาร์ทอัพป้ายเขียวมินต์เรียบง่าย สายชิว", reqCheck: () => true, reqText: "ชิวๆ ไม่มีเงื่อนไขไอเทมพิเศษ" },
+            2: { name: "[EXECUTIVE DIRECTOR]", class: "rank-2", cost: 150000, desc: "เริ่มขยับสู่ตำแหน่งผู้บริหารชั้นกลางป้ายสีน้ำเงิน", reqCheck: () => gameState.cosmeticInventory.length >= 3, reqText: "ต้องมีเฟอร์นิเจอร์ประดับห้อง CEO ในครอบครองอย่างน้อย 3 ชิ้น" },
+            3: { name: "[BOARD OF DIRECTORS]", class: "rank-3", cost: 450000, desc: "บอร์ดบริหารผู้ทรงอิทธิพล พร้อมป้ายออร่าเรืองแสงสีม่วง", reqCheck: () => hasCosmeticTier("Epic"), reqText: "ต้องครอบครองเฟอร์นิเจอร์ระดับ Epic อย่างน้อย 1 ชิ้น!" },
+            4: { name: "[CHIEF EXECUTIVE OFFICER]", class: "rank-4", cost: 1200000, desc: "ท่านประธานสูงสุด ป้ายเงาส้มทองเด่นสง่า", reqCheck: () => countCosmeticTier("Epic") >= 3, reqText: "ต้องครอบครองเฟอร์นิเจอร์ระดับ Epic อย่างน้อย 3 ชิ้น!" },
+            5: { name: "[THE CONGLOMERATE GOD]", class: "rank-5", cost: 5000000, desc: "พระเจ้าสูงสุดแห่งวงการธุรกิจ ป้ายไฟวิ่งสีรุ้ง RGB แฟลชตา", reqCheck: () => hasCosmeticTier("Mythic") || hasCosmeticTier("Legendary"), reqText: "ต้องครอบครองเฟอร์นิเจอร์แรร์ระดับ Legendary หรือ Mythic อย่างน้อย 1 ชิ้น!" }
+        };
+
+        // ข้อมูลดีไซน์ภาพเกียรติบัตร 5 ระดับชั้นสำหรับใช้ใน Canvas
+        const cardDesigns = {
+            1: { title: "STARTUP HERO", themeColor: "#00FFCC", bgGradient: ["#0a1916", "#14532d"], quote: "ก้าวแรกสู่ความมั่งคั่ง: จากคนคีย์ข้อมูลนิรนาม สู่วีรบุรุษผู้บุกเบิกตลาดสตาร์ทอัพอย่างเป็นทางการ", pattern: "grid" },
+            2: { title: "EXECUTIVE DIRECTOR", themeColor: "#60a5fa", bgGradient: ["#0a0f1d", "#1e3a8a"], quote: "ผู้ควบคุมหางเสือองค์กร: พิสูจน์แล้วซึ่งศักยภาพการจัดการ เลื่อนขั้นสู่ทำเนียบผู้อำนวยการฝ่ายปฏิบัติการ", pattern: "geometric" },
+            3: { title: "BOARD OF DIRECTORS", themeColor: "#a855f7", bgGradient: ["#120321", "#3b0764"], quote: "ผู้ชี้นำชะตากรรมธุรกิจ: นั่งเก้าอี้บอร์ดบริหารสูงสุด ร่วมกำหนดทิศทางตัวเลขพันล้านในหน้าประวัติศาสตร์", pattern: "aura" },
+            4: { title: "CHIEF EXECUTIVE OFFICER", themeColor: "#f97316", bgGradient: ["#180a05", "#7c2d12"], quote: "ที่สุดของโครงสร้างอำนาจ: ในออฟฟิศนี้ไม่มีใครใหญ่เกินคุณ... คำสั่งของคุณคือประกาศสิทธิ์เด็ดขาด", pattern: "sunburst" },
+            5: { title: "THE CONGLOMERATE GOD", themeColor: "#ff007f", bgGradient: ["#030008", "#1a0033"], quote: "ก้าวข้ามขีดจำกัดแห่งมรรตัย: เงินทุนไม่ใช่ปัจจัย คุณคือพระเจ้าผู้สร้างและทำลายอาณาจักรธุรกิจตามใจปรารถนา", pattern: "hologram" }
         };
 
         function hasCosmeticTier(tier) { return gameState.cosmeticInventory.some(i => i.rarity === tier); }
         function countCosmeticTier(tier) { return gameState.cosmeticInventory.filter(i => i.rarity === tier).length; }
 
         let luxuryPurchases = {
-            airmesChair: { name: '🛋️ เก้าอี้แอร์เมสสั่งทำพิเศษ', cost: 5000, lvl: 0, mult: 3, bonus: 0.2, desc: 'เพิ่มมูลค่าเงินสัญญาจ้างถาวร +20% ต่อขั้น' },
-            secretary: { name: '💼 จ้างเลขาฯ ส่วนตัวระดับท็อป', cost: 25000, lvl: 0, mult: 4, bonus: 0.5, desc: 'เพิ่มมูลค่าเงินสัญญาจ้างถาวร +50% ต่อขั้น' },
-            supercar: { name: '🏎️ ซูเปอร์คาร์จอดอวดหน้าบริษัท', cost: 150000, lvl: 0, mult: 5, bonus: 1.5, desc: 'เพิ่มมูลค่าเงินสัญญาจ้างถาวรทันที +150% ต่อขั้น' }
+            airmesChair: { name: '🛋️ เก้าอี้แอร์เมสสั่งทำพิเศษ', cost: 5000, lvl: 0, mult: 3, bonus: 0.2, desc: 'เพิ่มมูลค่าเงินสัญญาถาวร +20% ต่อขั้น' },
+            secretary: { name: '💼 จ้างเลขาฯ ส่วนตัวระดับท็อป', cost: 25000, lvl: 0, mult: 4, bonus: 0.5, desc: 'เพิ่มมูลค่าเงินสัญญาถาวร +50% ต่อขั้น' },
+            supercar: { name: '🏎️ ซูเปอร์คาร์จอดอวดหน้าบริษัท', cost: 150000, lvl: 0, mult: 5, bonus: 1.5, desc: 'เพิ่มมูลค่าเงินสัญญาถาวรทันที +150% ต่อขั้น' }
         };
 
         let upgrades = {
             autoWaterer: { name: '💦 ระบบคีย์โปรเจกต์ฝังโต๊ะอัตโนมัติ', lv: 0, max: 1, baseCost: 150, mult: 1, req: null, desc: 'เริ่มรันงานทันทีหลังคลิกโต๊ะว่าง' },
-            autoTasker: { name: '🖥️ พนักงานไอทีฝ่ายระบบจัดสรรคิวงาน', lv: 0, max: 3, baseCost: 400, mult: 3, req: 'autoWaterer', desc: 'หาพื้นที่โต๊ะว่างและออกโปรเจกต์งานให้อัตโนมัติทุกๆ 8/5/3 วินาที' },
-            autoCollector: { name: '🧑‍💻 พนักงานคีย์ข้อมูลและธุรการทั่วไป', lv: 0, max: 4, baseCost: 100, mult: 2.5, req: null, desc: 'เคลียร์เอกสารส่งงานและกดรับเงินเข้าบัญชีอัตโนมัติทุกๆ 3/2/1/0.5 วินาที' },
-            speedSupervisor: { name: '👨‍💼 ผู้จัดการฝ่ายปฏิบัติการจอมเคี่ยว', lv: 0, max: 3, baseCost: 1200, mult: 3.5, req: 'autoCollector', desc: 'ยืนเร่งความเร็วในการทำงานออโตเมติกทุกๆ 4/2/1 วินาที' },
-            hrManager: { name: '👩‍💼 ผู้อำนวยการฝ่ายบุคคล (HR Director)', lv: 0, max: 1, baseCost: 8000, mult: 1, req: 'allBots', desc: 'บัฟให้ทีมงานทุกคนในออฟฟิศทำงานเร็วขึ้น x2 เท่าทันที!' }
+            autoTasker: { name: '🖥️ พนักงานไอทีฝ่ายระบบจัดสรรคิวงาน', lv: 0, max: 3, baseCost: 400, mult: 3, req: 'autoWaterer', desc: 'หาพื้นที่โต๊ะว่างและออกงานให้อัตโนมัติทุกๆ 8/5/3 วินาที' },
+            autoCollector: { name: '🧑‍💻 พนักงานคีย์ข้อมูลและธุรการทั่วไป', lv: 0, max: 4, baseCost: 100, mult: 2.5, req: null, desc: 'เคลียร์เอกสารส่งงานและกดรับเงินเข้าบัญชีอัตโนมัติ' },
+            speedSupervisor: { name: '👨‍💼 ผู้จัดการฝ่ายปฏิบัติการจอมเคี่ยว', lv: 0, max: 3, baseCost: 1200, mult: 3.5, req: 'autoCollector', desc: 'ยืนเร่งความเร็วในการทำงานอัตโนมัติทุกๆ 4/2/1 วินาที' },
+            hrManager: { name: '👩‍💼 ผู้อำนวยการฝ่ายบุคคล (HR Director)', lv: 0, max: 1, baseCost: 8000, mult: 1, req: 'allBots', desc: 'บัฟให้ทีมงานทุกคนทำงานเร็วขึ้น x2 เท่าทันที!' }
         };
 
-        let gameState = { money: 120, shares: 0, prestigeCount: 0, selectedSeed: 'sprout', inventory: [], cosmeticInventory: [], crops: [] };
+        let gameState = { money: 120, shares: 0, prestigeCount: 0, selectedSeed: 'sprout', inventory: [], cosmeticInventory: [], crops: [], ceoName: "ท่านประธานบริษัท" };
         const arrowKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
         const arrowIcons = { 'ArrowUp':'⬆️', 'ArrowDown':'⬇️', 'ArrowLeft':'⬅️', 'ArrowRight':'➡️' };
         let currentTargetKey = 'ArrowUp';
 
-        if(localStorage.getItem('corporateTycoon_v6.6')) {
-            const saved = JSON.parse(localStorage.getItem('corporateTycoon_v6.6'));
-            gameState.money = saved.money ?? 120;
-            gameState.shares = saved.shares ?? 0;
-            gameState.prestigeCount = saved.prestigeCount ?? 0;
-            gameState.selectedSeed = saved.selectedSeed ?? 'sprout';
-            gameState.inventory = saved.inventory ?? [];
-            gameState.cosmeticInventory = saved.cosmeticInventory ?? [];
-            if(saved.upgrades) {
-                for(let k in saved.upgrades) { if(upgrades[k]) upgrades[k].lv = saved.upgrades[k].lv; }
+        // ==================== ระบบเซฟและหน้าแรก ====================
+        function checkExistingSave() {
+            const savedText = localStorage.getItem('corporateTycoon_v8.0_Save');
+            const continueBtn = document.getElementById('menu-continue-btn');
+            if (savedText !== null) {
+                continueBtn.disabled = false;
+                continueBtn.innerText = "▶️ เล่นต่อจากบริษัทเดิม (Continue)";
+            } else {
+                continueBtn.disabled = true;
+                continueBtn.innerText = "❌ ไม่พบเซฟเก่าในเครื่องนี้";
             }
-            if(saved.luxuryPurchases) {
-                for(let k in saved.luxuryPurchases) { if(luxuryPurchases[k]) luxuryPurchases[k].lvl = saved.luxuryPurchases[k].lvl ?? saved.luxuryPurchases[k].lv ?? 0; if(luxuryPurchases[k]) luxuryPurchases[k].lv = luxuryPurchases[k].lvl; }
-            }
-            const passed = Math.floor((Date.now() - saved.lastSaved) / 1000);
-            gameState.crops = (saved.crops || []).map(c => {
-                if(c.status === 'watered') { c.timer = Math.max(0, c.timer - passed); if(c.timer === 0) c.status = 'ready'; }
-                return c;
-            });
         }
 
+        function menuContinueGame() {
+            const savedText = localStorage.getItem('corporateTycoon_v8.0_Save');
+            if (savedText !== null) {
+                const saved = JSON.parse(savedText);
+                gameState.money = saved.money ?? 120;
+                gameState.shares = saved.shares ?? 0;
+                gameState.prestigeCount = saved.prestigeCount ?? 0;
+                gameState.selectedSeed = saved.selectedSeed ?? 'sprout';
+                gameState.inventory = saved.inventory ?? [];
+                gameState.cosmeticInventory = saved.cosmeticInventory ?? [];
+                gameState.ceoName = saved.ceoName ?? "ท่านประธานบริษัท";
+                document.getElementById('input-ceo-name').value = gameState.ceoName;
+                if(saved.upgrades) {
+                    for(let k in saved.upgrades) { if(upgrades[k]) upgrades[k].lv = saved.upgrades[k].lv; }
+                }
+                if(saved.luxuryPurchases) {
+                    for(let k in saved.luxuryPurchases) { if(luxuryPurchases[k]) luxuryPurchases[k].lvl = saved.luxuryPurchases[k].lvl ?? 0; }
+                }
+                const passed = Math.floor((Date.now() - (saved.lastSaved ?? Date.now())) / 1000);
+                gameState.crops = (saved.crops || []).map(c => {
+                    if(c.status === 'watered') { c.timer = Math.max(0, c.timer - passed); if(c.timer === 0) c.status = 'ready'; }
+                    return c;
+                });
+                document.getElementById('main-menu-screen').style.display = 'none';
+                switchTab('farm');
+            }
+        }
+
+        function menuNewGame() {
+            if (localStorage.getItem('corporateTycoon_v8.0_Save') !== null) {
+                if (!confirm("⚠️ ข้อมูลบริษัทเก่าจะถูกลบทั้งหมด ยืนยันที่จะเริ่มสร้างสาขาใหม่ตั้งแต่ศูนย์หรือไม่?")) return;
+            }
+            localStorage.removeItem('corporateTycoon_v8.0_Save');
+            gameState = { money: 120, shares: 0, prestigeCount: 0, selectedSeed: 'sprout', inventory: [], cosmeticInventory: [], crops: [], ceoName: document.getElementById('input-ceo-name').value || "ท่านประธานบริษัท" };
+            for(let k in upgrades) upgrades[k].lv = 0; 
+            for(let k in luxuryPurchases) luxuryPurchases[k].lvl = 0;
+            document.getElementById('main-menu-screen').style.display = 'none';
+            switchTab('farm');
+            saveGame();
+        }
+
+        function returnToMainMenu() { saveGame(); document.getElementById('main-menu-screen').style.display = 'flex'; checkExistingSave(); }
         function saveGame() {
-            localStorage.setItem('corporateTycoon_v6.6', JSON.stringify({
-                money: gameState.money, shares: gameState.shares, prestigeCount: gameState.prestigeCount, selectedSeed: gameState.selectedSeed, upgrades: upgrades, luxuryPurchases: luxuryPurchases, inventory: gameState.inventory, cosmeticInventory: gameState.cosmeticInventory, crops: gameState.crops, lastSaved: Date.now()
+            gameState.ceoName = document.getElementById('input-ceo-name').value || "ท่านประธานบริษัท";
+            localStorage.setItem('corporateTycoon_v8.0_Save', JSON.stringify({
+                money: gameState.money, shares: gameState.shares, prestigeCount: gameState.prestigeCount, selectedSeed: gameState.selectedSeed, upgrades: upgrades, luxuryPurchases: luxuryPurchases, inventory: gameState.inventory, cosmeticInventory: gameState.cosmeticInventory, crops: gameState.crops, ceoName: gameState.ceoName, lastSaved: Date.now()
             }));
         }
 
-        function checkSoftlock() {
-            const minCost = 10; const panel = document.getElementById('softlock-panel');
-            if (gameState.money < minCost && gameState.crops.length === 0) { panel.classList.remove('hidden'); } else { panel.classList.add('hidden'); }
+        // ==================== ระบบวาดการ์ดใบประกาศในตัวเกม (HTML5 Canvas 9:16) ====================
+        function generatePrestigeCardImage(rankNum) {
+            const canvas = document.getElementById('prestigeCanvas');
+            const ctx = canvas.getContext('2d');
+            const design = cardDesigns[rankNum];
+            const pName = gameState.ceoName || "ท่านผู้บริหารระดับสูง";
+
+            // 1. พื้นหลัง Gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, design.bgGradient[0]);
+            gradient.addColorStop(1, design.bgGradient[1]);
+            ctx.fillStyle = gradient; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 2. ลวดลาย Background
+            ctx.strokeStyle = design.themeColor; ctx.lineWidth = 1;
+            if (design.pattern === "grid") {
+                ctx.globalAlpha = 0.08;
+                for (let i = 0; i < canvas.width; i += 40) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke(); }
+                for (let j = 0; j < canvas.height; j += 40) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke(); }
+            } else if (design.pattern === "geometric" || design.pattern === "sunburst") {
+                ctx.globalAlpha = 0.05;
+                for (let i = 0; i < canvas.width; i += 60) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(canvas.width - i, canvas.height); ctx.stroke(); }
+            } else if (design.pattern === "aura" || design.pattern === "hologram") {
+                ctx.globalAlpha = 0.15;
+                let radialGrad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 100, canvas.width/2, canvas.height/2, 600);
+                radialGrad.addColorStop(0, design.themeColor); radialGrad.addColorStop(1, "transparent");
+                ctx.fillStyle = radialGrad; ctx.fillRect(0,0, canvas.width, canvas.height);
+            }
+            ctx.globalAlpha = 1.0;
+
+            // 3. กรอบรูปภาพ
+            ctx.strokeStyle = design.themeColor; ctx.lineWidth = 15;
+            ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+
+            // 4. หัวใบประกาศ
+            ctx.fillStyle = "#94a3b8"; ctx.font = "bold 24px -apple-system, sans-serif"; ctx.textAlign = "center";
+            ctx.fillText("CERTIFICATE OF HONORARY PRESTIGE // CORPORATE TYCOON", canvas.width / 2, 150);
+
+            // 5. ชื่อตำแหน่ง
+            ctx.fillStyle = "#ffffff"; ctx.font = "bold 60px -apple-system, sans-serif";
+            ctx.shadowColor = design.themeColor; ctx.shadowBlur = 30;
+            ctx.fillText(design.title, canvas.width / 2, 450);
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = design.themeColor; ctx.fillRect(canvas.width / 2 - 200, 490, 400, 6);
+
+            // 6. กล่องข้อความแสดงสถิติสำเร็จ
+            ctx.fillStyle = "rgba(15, 23, 42, 0.7)"; ctx.strokeStyle = "rgba(255, 255, 255, 0.1)"; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.roundRect(140, 650, canvas.width - 280, 430, 20); ctx.fill(); ctx.stroke();
+
+            ctx.textAlign = "left"; ctx.fillStyle = "#cbd5e1"; ctx.font = "30px -apple-system, sans-serif";
+            ctx.fillText("นามผู้บริหารเกียรติยศ:", 200, 740);
+            ctx.fillStyle = "#ffffff"; ctx.font = "bold 44px -apple-system, sans-serif";
+            ctx.fillText(pName, 200, 810);
+
+            ctx.fillStyle = "#cbd5e1"; ctx.font = "30px -apple-system, sans-serif";
+            ctx.fillText(`📈 อัตราโบนัสสะสมหุ้นสืบทอด: +${gameState.shares * 50}%`, 200, 910);
+            ctx.fillText(`🏢 ลำดับชั้นทำเนียบบอร์ดบริหาร: ขั้นที่ ${rankNum} / 5`, 200, 970);
+
+            // 7. คำโปรยท้ายการ์ด
+            ctx.textAlign = "center"; ctx.fillStyle = "#94a3b8"; ctx.font = "italic 26px -apple-system, sans-serif";
+            wrapText(ctx, `"${design.quote}"`, canvas.width / 2, 1350, canvas.width - 300, 45);
+
+            // 8. ลายเซ็นอนุมัติ
+            ctx.textAlign = "right"; ctx.fillStyle = "#475569"; ctx.font = "bold 22px -apple-system, sans-serif";
+            ctx.fillText("สมาคมบริหารการอู้งานแห่งชาติค้ำประกัน", canvas.width - 140, 1750);
+            ctx.fillText("APPROVED SECURITY SYSTEM // Q2-2026", canvas.width - 140, 1790);
         }
 
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            let words = text.split(' '); let line = '';
+            for(let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' '; let metrics = context.measureText(testLine);
+                if (metrics.width > maxWidth && n > 0) { context.fillText(line, x, y); line = words[n] + ' '; y += lineHeight; }
+                else { line = testLine; }
+            }
+            context.fillText(line, x, y);
+        }
+
+        function downloadPrestigeCard() {
+            const canvas = document.getElementById('prestigeCanvas');
+            const link = document.createElement('a');
+            link.download = `Prestige_Rank${gameState.prestigeCount}_${gameState.ceoName}.png`;
+            link.href = canvas.toDataURL('image/png'); link.click();
+        }
+
+        function closePrestigePopup() { document.getElementById('prestige-popup-overlay').style.display = 'none'; }
+
+        // ==================== ลูปกลไกเกมหลัก ====================
+        function checkSoftlock() {
+            const minCost = 10; const panel = document.getElementById('softlock-panel');
+            if (gameState.money < minCost && gameState.crops.length === 0) panel.classList.remove('hidden'); else panel.classList.add('hidden');
+        }
         function receiveBailout() { gameState.money += 50; updateMoneyUI(); checkSoftlock(); saveGame(); if(document.getElementById('m-farm').classList.contains('active')) renderCrops(); }
 
         function updateMoneyUI() {
             document.getElementById('money-txt').innerText = Math.floor(gameState.money).toLocaleString() + " G";
             document.getElementById('shares-txt').innerText = `📈 หุ้นสืบทอด: ${gameState.shares} หุ้น (+${gameState.shares * 50}%)`;
             document.getElementById('badge-inv').innerText = gameState.inventory.length + gameState.cosmeticInventory.length;
-            let sinkBonus = 0; for(let k in luxuryPurchases) sinkBonus += (luxuryPurchases[k].lvl ?? luxuryPurchases[k].lv ?? 0) * luxuryPurchases[k].bonus * 100;
+            let sinkBonus = 0; for(let k in luxuryPurchases) sinkBonus += (luxuryPurchases[k].lvl ?? 0) * luxuryPurchases[k].bonus * 100;
             document.getElementById('sink-txt').innerText = `🏢 บัฟกองทุนหรู: +${sinkBonus}%`;
 
             let currentRank = rankConfigs[gameState.prestigeCount];
             document.getElementById('sidebar-rank-slot').innerHTML = `<span class="rank-tag ${currentRank.class}">${currentRank.name}</span>`;
 
-            const pBtn = document.getElementById('prestige-btn'); 
-            const pReq = document.getElementById('prestige-requirement');
-
-            let nextRankNum = Math.min(5, gameState.prestigeCount + 1);
-            let nextRank = rankConfigs[nextRankNum];
+            const pBtn = document.getElementById('prestige-btn'); const pReq = document.getElementById('prestige-requirement');
+            let nextRankNum = Math.min(5, gameState.prestigeCount + 1); let nextRank = rankConfigs[nextRankNum];
 
             if(gameState.prestigeCount >= 5) {
-                pBtn.disabled = true;
-                pBtn.innerText = "ดำรงตำแหน่งสูงสุดถาวรแล้ว";
-                pReq.innerText = "✨ ท่านเป็นพระเจ้าแห่งวงการธุรกิจ คืนสู่ระดับสูงสุดอย่างสมบูรณ์แบบ!";
-                pReq.style.color = "var(--mythic)";
+                pBtn.disabled = true; pBtn.innerText = "ดำรงตำแหน่งสูงสุดถาวรแล้ว";
+                pReq.innerText = "✨ ท่านเป็นพระเจ้าแห่งวงการธุรกิจอย่างสมบูรณ์แบบ!"; pReq.style.color = "var(--mythic)";
                 document.getElementById('prestige-next-rank-name').innerText = "MAX RANK";
                 document.getElementById('prestige-rank-desc').innerText = "สิ้นสุดการไต่เต้าบอร์ดบริหาร";
-                document.getElementById('prestige-cost-txt').innerText = "-";
-                document.getElementById('prestige-fashion-txt').innerText = "-";
+                document.getElementById('prestige-cost-txt').innerText = "-"; document.getElementById('prestige-fashion-txt').innerText = "-";
                 return;
             }
 
@@ -435,27 +569,15 @@
             document.getElementById('prestige-cost-txt').innerText = nextRank.cost.toLocaleString() + " G";
             document.getElementById('prestige-fashion-txt').innerText = nextRank.reqText;
 
-            let isMoneyPass = gameState.money >= nextRank.cost;
-            let isFashionPass = nextRank.reqCheck();
-
+            let isMoneyPass = gameState.money >= nextRank.cost; let isFashionPass = nextRank.reqCheck();
             if(isMoneyPass && isFashionPass) {
-                pBtn.disabled = false;
-                pBtn.innerText = `เซ็นเอกสารเลื่อนตำแหน่งเป็นขั้นที่ ${nextRankNum}`;
-                pReq.innerText = `✨ บอร์ดบริหารอนุมัติพร้อมเลื่อนขั้นแล้ว!`;
-                pReq.style.color = "#4ade80";
+                pBtn.disabled = false; pBtn.innerText = `เซ็นเอกสารเลื่อนตำแหน่งเป็นขั้นที่ ${nextRankNum}`;
+                pReq.innerText = `✨ บอร์ดบริหารอนุมัติพร้อมเลื่อนขั้นและรับรูปรางวัล!`; pReq.style.color = "#4ade80";
             } else {
-                pBtn.disabled = true;
-                pBtn.innerText = `ลงนามขายกิจการ (เงื่อนไขไม่ครบ)`;
-                if(!isMoneyPass && !isFashionPass) {
-                    pReq.innerText = `⚠️ ขาดทั้งทุนจดทะเบียน และรสนิยมเฟอร์นิเจอร์ยังไม่ผ่านเกณฑ์!`;
-                    pReq.style.color = "#f87171";
-                } else if(!isMoneyPass) {
-                    pReq.innerText = `⚠️ ขาดแคลนงบประมาณทุนสะสมบริษัท (ต้องการอีก ${(nextRank.cost - gameState.money).toLocaleString()} G)`;
-                    pReq.style.color = "#f87171";
-                } else {
-                    pReq.innerText = `⚠️ รสนิยมไม่ผ่านเกณฑ์! ${nextRank.reqText}`;
-                    pReq.style.color = "#fca5a5";
-                }
+                pBtn.disabled = true; pBtn.innerText = `ลงนามขายกิจการ (เงื่อนไขไม่ครบ)`;
+                if(!isMoneyPass && !isFashionPass) { pReq.innerText = `⚠️ ขาดทั้งทุนจดทะเบียน และรสนิยมเฟอร์นิเจอร์ยังไม่ผ่านเกณฑ์!`; pReq.style.color = "#f87171"; }
+                else if(!isMoneyPass) { pReq.innerText = `⚠️ ขาดแคลนงบประมาณทุนสะสมบริษัท (ต้องการอีก ${(nextRank.cost - gameState.money).toLocaleString()} G)`; pReq.style.color = "#f87171"; }
+                else { pReq.innerText = `⚠️ รสนิยมไม่ผ่านเกณฑ์! ${nextRank.reqText}`; pReq.style.color = "#fca5a5"; }
             }
             checkSoftlock();
         }
@@ -463,13 +585,10 @@
         function switchTab(tab) {
             ['tab-farm', 'tab-shop', 'tab-up', 'tab-gacha', 'tab-codex', 'tab-luxury', 'tab-prestige'].forEach(t => document.getElementById(t).classList.add('hidden'));
             ['m-farm', 'm-shop', 'm-up', 'm-gacha', 'm-codex', 'm-luxury', 'm-prestige'].forEach(m => document.getElementById(m).classList.remove('active'));
-            document.getElementById('tab-' + tab).classList.remove('hidden');
-            document.getElementById('m-' + tab).classList.add('active');
+            document.getElementById('tab-' + tab).classList.remove('hidden'); document.getElementById('m-' + tab).classList.add('active');
             
-            if(tab === 'farm') {
-                document.getElementById('tab-title').innerText = 'ระบบจัดการออฟฟิศหลัก';
-                renderShelfOnDesk(); renderCrops();
-            } else if(tab === 'shop') { document.getElementById('tab-title').innerText = 'คลังใบสั่งโปรเจกต์งาน'; renderShop(); }
+            if(tab === 'farm') { document.getElementById('tab-title').innerText = 'ระบบจัดการออฟฟิศหลัก'; renderShelfOnDesk(); renderCrops(); } 
+            else if(tab === 'shop') { document.getElementById('tab-title').innerText = 'คลังใบสั่งโปรเจกต์งาน'; renderShop(); }
             else if(tab === 'up') { document.getElementById('tab-title').innerText = 'โครงสร้างทีมพนักงาน'; renderUpgrades(); }
             else if(tab === 'codex') { document.getElementById('tab-title').innerText = 'สารานุกรมไอเทมทั้งหมด'; renderCodex(); }
             else if(tab === 'luxury') { document.getElementById('tab-title').innerText = 'กองทุนถลุงเงินเฟ้อ'; renderLuxurySinks(); }
@@ -480,41 +599,20 @@
             const shelf = document.getElementById('desk-shelf-slots'); shelf.innerHTML = '';
             gachaPool.forEach(item => {
                 const count = gameState.inventory.filter(inv => inv.id === item.id).length; const hasItem = count > 0;
-                shelf.innerHTML += `
-                    <div class="shelf-item ${item.rarity} ${hasItem ? 'unlocked' : ''}">
-                        ${item.icon}
-                        ${hasItem && count > 1 ? `<span style="position:absolute; bottom:1px; right:3px; font-size:9px; background:#475569; color:white; padding:0 3px; border-radius:4px;">+${count}</span>` : ''}
-                        <div class="shelf-tooltip">
-                            <b>${item.name}</b><br>${item.desc}
-                        </div>
-                    </div>`;
+                shelf.innerHTML += `<div class="shelf-item ${item.rarity} ${hasItem ? 'unlocked' : ''}">${item.icon}${hasItem && count > 1 ? `<span style="position:absolute; bottom:1px; right:3px; font-size:9px; background:#475569; color:white; padding:0 3px; border-radius:4px;">+${count}</span>` : ''}<div class="shelf-tooltip"><b>${item.name}</b><br>${item.desc}</div></div>`;
             });
         }
 
         function renderShop() {
             const container = document.getElementById('shop-container'); container.innerHTML = '';
-            
-            let prestigeMult = gameState.shares * 0.50; 
-            let gachaMult = 0;
+            let prestigeMult = gameState.shares * 0.50; let gachaMult = 0;
             gameState.inventory.forEach(item => { if(item.buff === 'price') gachaMult += item.val; if(item.buff === 'all') gachaMult += 1.5; });
-            let luxuryMult = 0; for(let k in luxuryPurchases) luxuryMult += (luxuryPurchases[k].lvl ?? luxuryPurchases[k].lv ?? 0) * luxuryPurchases[k].bonus;
+            let luxuryMult = 0; for(let k in luxuryPurchases) luxuryMult += (luxuryPurchases[k].lvl ?? 0) * luxuryPurchases[k].bonus;
             let currentTotalMultiplier = 1 + prestigeMult + gachaMult + luxuryMult;
 
             cropsData.forEach(crop => {
-                const isSelected = gameState.selectedSeed === crop.id;
-                let calculatedSell = Math.floor(crop.sell * currentTotalMultiplier);
-
-                container.innerHTML += `
-                    <div class="shop-item">
-                        <div style="font-size:28px;">${crop.icon}</div>
-                        <strong>${crop.name}</strong>
-                        <div class="project-cost-benefit">
-                            <span style="color:#f87171;">💸 ต้นทุนเริ่มงาน: ${crop.buy} G</span>
-                            <span style="color:#4ade80;">💰 สัญญาจ้างรับสุทธิ: ${calculatedSell} G</span>
-                            <span style="color:var(--text-sub); font-size:10px;">⏱️ ระยะเวลาเคลียร์งาน: ${crop.time} วินาที</span>
-                        </div>
-                        <button class="shop-btn ${isSelected ? 'selected' : ''}" onclick="selectSeed('${crop.id}')">${isSelected ? '✓ ประจำโต๊ะทำงาน' : 'สลับใช้โปรเจกต์นี้'}</button>
-                    </div>`;
+                const isSelected = gameState.selectedSeed === crop.id; let calculatedSell = Math.floor(crop.sell * currentTotalMultiplier);
+                container.innerHTML += `<div class="shop-item"><div style="font-size:28px;">${crop.icon}</div><strong>${crop.name}</strong><div class="project-cost-benefit"><span style="color:#f87171;">💸 ต้นทุนเริ่มงาน: ${crop.buy} G</span><span style="color:#4ade80;">💰 สัญญาจ้างสุทธิ: ${calculatedSell} G</span><span style="color:var(--text-sub); font-size:10px;">⏱️ ระยะเวลา: ${crop.time} วินาที</span></div><button class="shop-btn ${isSelected ? 'selected' : ''}" onclick="selectSeed('${crop.id}')">${isSelected ? '✓ ประจำโต๊ะทำงาน' : 'สลับใช้โปรเจกต์นี้'}</button></div>`;
             });
         }
         function selectSeed(id) { gameState.selectedSeed = id; renderShop(); saveGame(); }
@@ -523,9 +621,7 @@
             let up = upgrades[key]; if(!up.req) return false;
             if(up.req === 'autoWaterer' && upgrades.autoWaterer.lv < 1) return true;
             if(up.req === 'autoCollector' && upgrades.autoCollector.lv < 1) return true;
-            if(up.req === 'allBots') {
-                if(upgrades.autoWaterer.lv < 1 || upgrades.autoTasker.lv < 1 || upgrades.autoCollector.lv < 1 || upgrades.speedSupervisor.lv < 1) return true;
-            }
+            if(up.req === 'allBots') { if(upgrades.autoWaterer.lv < 1 || upgrades.autoTasker.lv < 1 || upgrades.autoCollector.lv < 1 || upgrades.speedSupervisor.lv < 1) return true; }
             return false;
         }
 
@@ -534,12 +630,7 @@
             for (let key in upgrades) {
                 let up = upgrades[key]; let cost = Math.floor(up.baseCost * Math.pow(up.mult, up.lv)); let isMax = up.lv >= up.max;
                 let locked = isUpgradeLocked(key); let btnText = isMax ? 'ระดับสูงสุดแล้ว' : 'อนุมัติจ้าง: ' + cost.toLocaleString() + ' G';
-                container.innerHTML += `
-                    <div class="shop-item" style="${locked ? 'opacity:0.6;' : ''}">
-                        <strong>${up.name} ${isMax ? '(MAX)' : `(Lv. ${up.lv}/${up.max})`}</strong>
-                        <p style="font-size:12px; color:var(--text-sub);">${up.desc}</p>
-                        <button class="shop-btn" ${isMax || locked || gameState.money < cost ? 'disabled' : ''} onclick="buyUpgrade('${key}')">${btnText}</button>
-                    </div>`;
+                container.innerHTML += `<div class="shop-item" style="${locked ? 'opacity:0.6;' : ''}"><strong>${up.name} ${isMax ? '(MAX)' : `(Lv. ${up.lv}/${up.max})`}</strong><p style="font-size:12px; color:var(--text-sub);">${up.desc}</p><button class="shop-btn" ${isMax || locked || gameState.money < cost ? 'disabled' : ''} onclick="buyUpgrade('${key}')">${btnText}</button></div>`;
             }
         }
         function buyUpgrade(key) {
@@ -549,55 +640,28 @@
 
         function renderCodex() {
             const tbody = document.getElementById('codex-tbody'); tbody.innerHTML = '';
-            gachaPool.forEach(item => {
-                const count = gameState.inventory.filter(inv => inv.id === item.id).length;
-                tbody.innerHTML += `<tr><td>${item.icon} ${item.name}</td><td class="${item.rarity}">${item.rarity}</td><td>${item.rate}</td><td>${item.desc} (มี x${count})</td></tr>`;
-            });
+            gachaPool.forEach(item => { const count = gameState.inventory.filter(inv => inv.id === item.id).length; tbody.innerHTML += `<tr><td>${item.icon} ${item.name}</td><td class="${item.rarity}">${item.rarity}</td><td>${item.rate}</td><td>${item.desc} (มี x${count})</td></tr>`; });
             const cTbody = document.getElementById('codex-cosmetic-tbody'); cTbody.innerHTML = '';
-            cosmeticPool.forEach(item => {
-                const hasItem = gameState.cosmeticInventory.some(inv => inv.id === item.id);
-                cTbody.innerHTML += `<tr><td>${item.icon} ${item.name}</td><td class="${item.rarity}">${item.rarity}</td><td>${item.rate}</td><td>${hasItem ? '🟢 ปลดล็อกแล้ว' : '🔒 ยังไม่มีในห้องทำงาน'}</td></tr>`;
-            });
+            cosmeticPool.forEach(item => { const hasItem = gameState.cosmeticInventory.some(inv => inv.id === item.id); cTbody.innerHTML += `<tr><td>${item.icon} ${item.name}</td><td class="${item.rarity}">${item.rarity}</td><td>${item.rate}</td><td>${hasItem ? '🟢 ครอบครองแล้ว' : '🔒 ยังไม่มีในห้องทำงาน'}</td></tr>`; });
         }
 
         function renderLuxurySinks() {
             const container = document.getElementById('luxury-container'); container.innerHTML = '';
             for(let key in luxuryPurchases) {
-                let item = luxuryPurchases[key]; 
-                let currentLvl = item.lvl ?? item.lv ?? 0;
-                let currentCost = Math.floor(item.cost * Math.pow(item.mult, currentLvl));
-                container.innerHTML += `
-                    <div class="shop-item">
-                        <strong>${item.name} (ขั้นที่ ${currentLvl})</strong>
-                        <button class="shop-btn" ${gameState.money < currentCost ? 'disabled' : ''} onclick="buyLuxury('${key}')">ซื้อความหรูหรา: ${currentCost.toLocaleString()} G</button>
-                    </div>`;
+                let item = luxuryPurchases[key]; let currentLvl = item.lvl ?? 0; let currentCost = Math.floor(item.cost * Math.pow(item.mult, currentLvl));
+                container.innerHTML += `<div class="shop-item"><strong>${item.name} (ขั้นที่ ${currentLvl})</strong><p style="font-size:11px; color:var(--text-sub); margin-bottom:5px;">${item.desc}</p><button class="shop-btn" ${gameState.money < currentCost ? 'disabled' : ''} onclick="buyLuxury('${key}')">ซื้อความหรูหรา: ${currentCost.toLocaleString()} G</button></div>`;
             }
         }
         function buyLuxury(key) {
-            let item = luxuryPurchases[key];
-            let currentLvl = item.lvl ?? item.lv ?? 0;
-            let currentCost = Math.floor(item.cost * Math.pow(item.mult, currentLvl));
-            if(gameState.money >= currentCost) { 
-                gameState.money -= currentCost; 
-                currentLvl++;
-                item.lvl = currentLvl;
-                item.lv = currentLvl;
-                updateMoneyUI(); 
-                renderLuxurySinks(); 
-                saveGame(); 
-            }
+            let item = luxuryPurchases[key]; let currentLvl = item.lvl ?? 0; let currentCost = Math.floor(item.cost * Math.pow(item.mult, currentLvl));
+            if(gameState.money >= currentCost) { gameState.money -= currentCost; currentLvl++; item.lvl = currentLvl; updateMoneyUI(); renderLuxurySinks(); saveGame(); }
         }
 
-        function handleSandboxClick(e) {
-            if (e.target !== document.getElementById('sandbox')) return;
-            const rect = e.target.getBoundingClientRect(); const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-            plantSeedAt(x, y);
-        }
-
+        function handleSandboxClick(e) { if (e.target !== document.getElementById('sandbox')) return; const rect = e.target.getBoundingClientRect(); plantSeedAt(e.clientX - rect.left, e.clientY - rect.top); }
         function plantSeedAt(x, y) {
             let growBuff = 0; gameState.inventory.forEach(item => { if(item.buff === 'grow') growBuff += item.val; });
+            const seed = cropsData.find(c => c.id === gameState.selectedSeed);
             if (upgrades.autoWaterer.lv > 0) {
-                const seed = cropsData.find(c => c.id === gameState.selectedSeed);
                 if (gameState.money >= seed.buy) {
                     gameState.money -= seed.buy; let finalTime = Math.max(1, seed.time - growBuff);
                     gameState.crops.push({ id: 'c_'+Date.now()+Math.random().toString(36).substr(2,3), x: x, y: y, status: 'watered', cropId: seed.id, timer: finalTime, maxTime: finalTime });
@@ -611,54 +675,33 @@
         }
 
         function renderCrops() {
-            const sandbox = document.getElementById('sandbox');
-            sandbox.querySelectorAll('.crop-node, .desk-decoration').forEach(n => n.remove());
-
-            const cabin = document.getElementById('cabin-room');
-            cabin.querySelectorAll('.cosmetic-decoration, .cabin-slot-detector').forEach(n => n.remove());
+            const sandbox = document.getElementById('sandbox'); sandbox.querySelectorAll('.crop-node, .desk-decoration').forEach(n => n.remove());
+            const cabin = document.getElementById('cabin-room'); cabin.querySelectorAll('.cosmetic-decoration, .cabin-slot-detector').forEach(n => n.remove());
 
             gameState.inventory.forEach((item, index) => {
                 const deco = document.createElement('div'); deco.className = 'desk-decoration'; deco.innerText = item.icon;
-                deco.style.left = `${(index * 25) % 60 + 15}px`; deco.style.top = `${(index * 15) % 30 + 40}px`;
-                sandbox.appendChild(deco);
+                deco.style.left = `${(index * 25) % 60 + 15}px`; deco.style.top = `${(index * 15) % 30 + 40}px`; sandbox.appendChild(deco);
             });
 
             cosmeticPool.forEach((slotItem) => {
                 const isUnlocked = gameState.cosmeticInventory.some(inv => inv.id === slotItem.id);
-                
-                const cDeco = document.createElement('div');
-                cDeco.className = `cosmetic-decoration ${slotItem.rarity} ${isUnlocked ? 'unlocked' : 'locked'}`;
-                cDeco.innerText = slotItem.icon;
-                cDeco.style.left = `${slotItem.px}px`;
-                cDeco.style.top = `${slotItem.py}px`;
-                cabin.appendChild(cDeco);
+                const cDeco = document.createElement('div'); cDeco.className = `cosmetic-decoration ${slotItem.rarity} ${isUnlocked ? 'unlocked' : 'locked'}`;
+                cDeco.innerText = slotItem.icon; cDeco.style.left = `${slotItem.px}px`; cDeco.style.top = `${slotItem.py}px`; cabin.appendChild(cDeco);
 
-                const detector = document.createElement('div');
-                detector.className = 'cabin-slot-detector';
-                detector.style.left = `${slotItem.px}px`;
-                detector.style.top = `${slotItem.py}px`;
-                detector.innerHTML = `
-                    <div class="cabin-tooltip">
-                        <b>${slotItem.name}</b> [${slotItem.rarity}]<br>
-                        ${isUnlocked ? '🟢 ติดตั้งในห้องทำงานแล้ว' : '🔒 ยังสุ่มไม่เจอชิ้นนี้'}
-                    </div>`;
+                const detector = document.createElement('div'); detector.className = 'cabin-slot-detector'; detector.style.left = `${slotItem.px}px`; detector.style.top = `${slotItem.py}px`;
+                detector.innerHTML = `<div class="cabin-tooltip"><b>${slotItem.name}</b> [${slotItem.rarity}]<br>${isUnlocked ? '🟢 ติดตั้งแล้ว' : '🔒 ยังไม่มี'}</div>`;
                 cabin.appendChild(detector);
             });
 
             gameState.crops.forEach(crop => {
-                const node = document.createElement('div'); node.className = `crop-node ${crop.status}`;
-                node.style.left = `${crop.x}px`; node.style.top = `${crop.y}px`;
+                const node = document.createElement('div'); node.className = `crop-node ${crop.status}`; node.style.left = `${crop.x}px`; node.style.top = `${crop.y}px`;
                 let inner = `<div class="office-desk-base"></div>`;
                 if (crop.status === 'dug') inner += `<div class="crop-icon" style="font-size:11px;">💻 โต๊ะว่าง</div>`;
                 else if (crop.status === 'watered') {
-                    inner += `<div class="crop-icon">🧑‍💻</div>`;
-                    let pct = ((crop.maxTime - crop.timer) / crop.maxTime) * 100;
+                    inner += `<div class="crop-icon">🧑‍💻</div>`; let pct = ((crop.maxTime - crop.timer) / crop.maxTime) * 100;
                     inner += `<div class="crop-bar"><div class="crop-progress" style="width:${pct}%"></div></div>`;
-                } else if (crop.status === 'ready') {
-                    inner += `<div class="noti-badge">🔴</div><div class="crop-icon">${cropsData.find(s => s.id === crop.cropId).icon}</div>`;
-                }
-                node.innerHTML = inner; node.onclick = (e) => { e.stopPropagation(); handleCropClick(crop.id, e); };
-                sandbox.appendChild(node);
+                } else if (crop.status === 'ready') { inner += `<div class="noti-badge">🔴</div><div class="crop-icon">${cropsData.find(s => s.id === crop.cropId).icon}</div>`; }
+                node.innerHTML = inner; node.onclick = (e) => { e.stopPropagation(); handleCropClick(crop.id, e); }; sandbox.appendChild(node);
             });
         }
 
@@ -667,10 +710,8 @@
             if (crop.status === 'dug') {
                 const seed = cropsData.find(c => c.id === gameState.selectedSeed);
                 if (gameState.money >= seed.buy) {
-                    gameState.money -= seed.buy;
-                    let growBuff = 0; gameState.inventory.forEach(item => { if(item.buff === 'grow') growBuff += item.val; });
-                    crop.status = 'watered'; crop.cropId = seed.id; crop.timer = Math.max(1, seed.time - growBuff); crop.maxTime = crop.timer;
-                    updateMoneyUI();
+                    gameState.money -= seed.buy; let growBuff = 0; gameState.inventory.forEach(item => { if(item.buff === 'grow') growBuff += item.val; });
+                    crop.status = 'watered'; crop.cropId = seed.id; crop.timer = Math.max(1, seed.time - growBuff); crop.maxTime = crop.timer; updateMoneyUI();
                 }
             } else if (crop.status === 'ready') { collectCrop(crop, e.clientX, e.clientY); }
             renderCrops(); saveGame();
@@ -680,18 +721,15 @@
             const seed = cropsData.find(s => s.id === crop.cropId);
             let prestigeMult = gameState.shares * 0.50; let gachaMult = 0;
             gameState.inventory.forEach(item => { if(item.buff === 'price') gachaMult += item.val; if(item.buff === 'all') gachaMult += 1.5; });
-            let luxuryMult = 0; for(let k in luxuryPurchases) luxuryMult += (luxuryPurchases[k].lvl ?? luxuryPurchases[k].lv ?? 0) * luxuryPurchases[k].bonus;
+            let luxuryMult = 0; for(let k in luxuryPurchases) luxuryMult += (luxuryPurchases[k].lvl ?? 0) * luxuryPurchases[k].bonus;
 
             let finalPrice = Math.floor(seed.sell * (1 + prestigeMult + gachaMult + luxuryMult)); gameState.money += finalPrice;
             if(!cx || !cy) { const box = document.getElementById('sandbox').getBoundingClientRect(); cx = box.left + crop.x; cy = box.top + crop.y; }
-            createJuicyFloat(cx, cy, `+${finalPrice} G`);
-            gameState.crops = gameState.crops.filter(c => c.id !== crop.id); updateMoneyUI();
+            createJuicyFloat(cx, cy, `+${finalPrice} G`); gameState.crops = gameState.crops.filter(c => c.id !== crop.id); updateMoneyUI();
         }
 
         function createJuicyFloat(x, y, txt) {
-            const el = document.createElement('div'); el.className = 'money-float'; el.innerText = txt;
-            el.style.left = `${x - 20}px`; el.style.top = `${y - 20}px`; document.body.appendChild(el);
-            setTimeout(() => el.remove(), 600);
+            const el = document.createElement('div'); el.className = 'money-float'; el.innerText = txt; el.style.left = `${x - 20}px`; el.style.top = `${y - 20}px`; document.body.appendChild(el); setTimeout(() => el.remove(), 600);
         }
 
         function rollGacha() {
@@ -701,8 +739,7 @@
                 else if (rand < 1.5) selectedItem = gachaPool.find(i => i.id === 'g_fig');
                 else if (rand < 15.5) { let epics = gachaPool.filter(i => i.rarity === 'Epic'); selectedItem = epics[Math.floor(Math.random() * epics.length)]; }
                 else { let commons = gachaPool.filter(i => i.rarity === 'Common'); selectedItem = commons[Math.floor(Math.random() * commons.length)]; }
-                gameState.inventory.push(selectedItem);
-                const res = document.getElementById('gacha-result'); res.innerText = `🎉 ได้รับสเตตัส: [${selectedItem.name}]!`;
+                gameState.inventory.push(selectedItem); document.getElementById('gacha-result').innerText = `🎉 ได้รับ: [${selectedItem.name}]!`;
                 updateMoneyUI(); saveGame(); renderShelfOnDesk();
             } else { alert("เงินทุนไม่พอครับ!"); }
         }
@@ -710,58 +747,33 @@
         function rollCosmeticGacha() {
             if(gameState.money >= 150) {
                 gameState.money -= 150; let rand = Math.random() * 100; let selectedItem = null;
-                
-                if (rand < 1.5) { 
-                    let pool = cosmeticPool.filter(i => i.rarity === 'Mythic');
-                    selectedItem = pool[Math.floor(Math.random() * pool.length)];
-                } else if (rand < 10.0) { 
-                    let pool = cosmeticPool.filter(i => i.rarity === 'Legendary');
-                    selectedItem = pool[Math.floor(Math.random() * pool.length)];
-                } else if (rand < 35.0) { 
-                    let pool = cosmeticPool.filter(i => i.rarity === 'Epic');
-                    selectedItem = pool[Math.floor(Math.random() * pool.length)];
-                } else { 
-                    let pool = cosmeticPool.filter(i => i.rarity === 'Common');
-                    selectedItem = pool[Math.floor(Math.random() * pool.length)];
-                }
+                if (rand < 1.5) { let pool = cosmeticPool.filter(i => i.rarity === 'Mythic'); selectedItem = pool[Math.floor(Math.random() * pool.length)]; } 
+                else if (rand < 10.0) { let pool = cosmeticPool.filter(i => i.rarity === 'Legendary'); selectedItem = pool[Math.floor(Math.random() * pool.length)]; } 
+                else if (rand < 35.0) { let pool = cosmeticPool.filter(i => i.rarity === 'Epic'); selectedItem = pool[Math.floor(Math.random() * pool.length)]; } 
+                else { let pool = cosmeticPool.filter(i => i.rarity === 'Common'); selectedItem = pool[Math.floor(Math.random() * pool.length)]; }
 
-                // สัญญาลักษณ์แก้ไขบัคตัวแปร: ใช้ selectedItem เช็คสถานะปลดล็อกเพื่อกันสุ่มไอเทมซ้ำลงอาร์เรย์
-                if(!gameState.cosmeticInventory.some(inv => inv.id === selectedItem.id)) {
-                     gameState.cosmeticInventory.push(selectedItem);
-                }
-
-                const res = document.getElementById('gacha-cosmetic-result');
-                res.innerHTML = `✨ อนุมัติจัดซื้อเฟอร์นิเจอร์: <span class="${selectedItem.rarity}">[${selectedItem.name}]</span> ไปประดับไว้ที่พิกัดห้อง CEO แล้ว!`;
-                
+                if(!gameState.cosmeticInventory.some(inv => inv.id === selectedItem.id)) { gameState.cosmeticInventory.push(selectedItem); }
+                document.getElementById('gacha-cosmetic-result').innerHTML = `✨ จัดซื้อเฟอร์นิเจอร์: <span class="${selectedItem.rarity}">[${selectedItem.name}]</span> เรียบร้อยแล้ว!`;
                 if(document.getElementById('m-farm').classList.contains('active')) renderCrops();
                 updateMoneyUI(); saveGame();
             } else { alert("เงินทุนไม่พอครับ!"); }
         }
 
+        // ==================== ฟังก์ชันทำ Prestige บังคับเด้งรูปภาพเกียรติยศ ====================
         function triggerPrestige() {
-            let nextRankNum = Math.min(5, gameState.prestigeCount + 1);
-            let nextRank = rankConfigs[nextRankNum];
-
+            let nextRankNum = Math.min(5, gameState.prestigeCount + 1); let nextRank = rankConfigs[nextRankNum];
             if (gameState.money < nextRank.cost || !nextRank.reqCheck()) return;
 
-            let gainedShares = Math.floor(gameState.money / 15000); 
-            if(gainedShares < 1) gainedShares = 1;
+            let gainedShares = Math.floor(gameState.money / 15000); if(gainedShares < 1) gainedShares = 1;
+            if(confirm(`ยืนยันการเซ็นสัญญาขายกิจการเพื่อเลื่อนตำแหน่งเป็นระดับ ${nextRankNum}? (คลังไอเทมตกแต่งจะคงอยู่ถาวร)`)) {
+                gameState.prestigeCount = nextRankNum; gameState.shares += gainedShares; gameState.money = 120; gameState.crops = [];
+                for(let k in upgrades) upgrades[k].lv = 0; for(let k in luxuryPurchases) luxuryPurchases[k].lvl = 0;
 
-            if(confirm(`ยืนยันการเซ็นสัญญาลงนามขายกิจการ เพื่อเลื่อนตำแหน่งสู่ระดับถาวรขั้นที่ ${nextRankNum} [${nextRank.name}]? (คุณจะได้รับหุ้นสืบทอดเพิ่ม +${gainedShares} หุ้น ส่วนของแฟชันและไอเทมในคลังจะคงอยู่ถาวร)`)) {
-                gameState.prestigeCount = nextRankNum;
-                gameState.shares += gainedShares; 
-                gameState.money = 120; 
-                gameState.crops = [];
-                
-                for(let k in upgrades) upgrades[k].lv = 0; 
-                for(let k in luxuryPurchases) luxuryPurchases[k].lvl = 0; 
-                for(let k in luxuryPurchases) luxuryPurchases[k].lv = 0; 
+                // 🎨 สั่งรันคำสั่งวาดภาพเกียรติบัตรสดๆ ลง Canvas แล้วเปิดหน้าต่าง Popup
+                generatePrestigeCardImage(nextRankNum);
+                document.getElementById('prestige-popup-overlay').style.display = 'flex';
 
-                switchTab('farm'); 
-                updateMoneyUI(); 
-                saveGame();
-                
-                alert(`👑 ยินดีด้วยครับท่านประธาน! บอร์ดบริหารลงนามแต่งตั้งท่านให้ดำรงตำแหน่งระดับสูง ${nextRank.name} เรียบร้อยแล้ว!`);
+                switchTab('farm'); updateMoneyUI(); saveGame();
             }
         }
 
@@ -773,6 +785,7 @@
 
         let collectCounter = 0; let taskerCounter = 0; let supervisorCounter = 0;
         setInterval(() => {
+            if (document.getElementById('main-menu-screen').style.display === 'flex') return;
             let changed = false; let hrBuff = upgrades.hrManager.lv > 0 ? 2 : 1;
             gameState.crops.forEach(crop => { if(crop.status === 'watered' && crop.timer > 0) { crop.timer--; if(crop.timer <= 0) { crop.timer = 0; crop.status = 'ready'; } changed = true; } });
             
@@ -796,29 +809,17 @@
         
         window.addEventListener('keydown', function(e) {
             if(e.code === 'Space') { e.preventDefault(); triggerPanic(); return; }
-            
-            if(e.key === 'a' || e.key === 'A') {
-                if(document.getElementById('panic-screen').style.display !== 'block') {
-                    let adminPass = prompt("🔮 กรุณากรอกรหัสลับผู้บริหารระดับสูง (Developer Key):");
-                    if(adminPass === "CEO2026") {
-                        gameState.money += 50000;
-                        updateMoneyUI();
-                        saveGame();
-                        if(document.getElementById('m-shop').classList.contains('active')) renderShop();
-                        alert("⚡ ยินดีต้อนรับท่านประธาน! เสกเงินทุนฉุกเฉินเข้าระบบเรียบร้อย +50,000 G");
-                    } else if (adminPass !== null) {
-                        alert("❌ รหัสไม่ถูกต้อง! คุณไม่มีสิทธิ์เข้าถึง console นี้");
-                    }
-                    return;
-                }
+            if((e.key === 'a' || e.key === 'A') && document.getElementById('panic-screen').style.display !== 'block') {
+                let adminPass = prompt("🔮 Developer Key:");
+                if(adminPass === "CEO2026") { gameState.money += 5000000; updateMoneyUI(); saveGame(); if(document.getElementById('m-shop').classList.contains('active')) renderShop(); }
+                return;
             }
-
-            if(arrowKeys.includes(e.key) && document.getElementById('panic-screen').style.display !== 'block') {
+            if(arrowKeys.includes(e.key) && document.getElementById('panic-screen').style.display !== 'block' && document.getElementById('main-menu-screen').style.display !== 'flex') {
                 e.preventDefault(); if(e.key === currentTargetKey) { let basePower = 0.3; gameState.inventory.forEach(i => { if(i.buff === 'macro') basePower += i.val; }); triggerMacroReduce(basePower); nextArrowChallenge(); }
             }
         });
 
-        nextArrowChallenge(); updateMoneyUI(); renderShelfOnDesk(); renderCrops();
+        checkExistingSave(); nextArrowChallenge();
     </script>
 </body>
 </html>
